@@ -32,7 +32,14 @@
         <mat-icon class="rf-chevron">expand_more</mat-icon>
       </button>
       <mat-menu #userMenu="matMenu">
-        <button mat-menu-item (click)="logout()"><mat-icon>logout</mat-icon><span>Logout</span></button>
+        <button mat-menu-item routerLink="/profile">
+          <mat-icon>person_outline</mat-icon>
+          <span>Profile</span>
+        </button>
+        <button mat-menu-item (click)="logout()">
+          <mat-icon>logout</mat-icon>
+          <span>Logout</span>
+        </button>
       </mat-menu>
     </div>
   </nav>
@@ -45,6 +52,16 @@
           <p>Create, duplicate, and manage your resumes and cover letters.</p>
         </div>
         <button class="rf-btn-create-resume" (click)="openCreateModal()"><mat-icon>add</mat-icon>New Document</button>
+      </div>
+
+      <div class="rf-search-row">
+        <div class="rf-search-box">
+          <mat-icon>search</mat-icon>
+          <input class="rf-input" [(ngModel)]="searchTerm" placeholder="Search documents by title…" />
+          <button *ngIf="searchTerm" mat-icon-button (click)="clearSearch()" title="Clear search">
+            <mat-icon>close</mat-icon>
+          </button>
+        </div>
       </div>
 
       <div class="rf-filter-row">
@@ -78,10 +95,16 @@
         </article>
       </div>
 
-      <div class="rf-empty-state" *ngIf="!loading && !filteredDocuments.length">
+      <div class="rf-empty-state" *ngIf="!loading && !filteredDocuments.length && !searchTerm">
         <div class="rf-empty-icon"><mat-icon>description</mat-icon></div>
         <h3>No documents here yet</h3>
         <p>Create your first resume or cover letter and it will appear in this workspace.</p>
+      </div>
+
+      <div class="rf-empty-state" *ngIf="!loading && !filteredDocuments.length && searchTerm">
+        <div class="rf-empty-icon"><mat-icon>search_off</mat-icon></div>
+        <h3>No matches for "{{ searchTerm }}"</h3>
+        <p>Try a different title or clear the search.</p>
       </div>
     </div>
   </main>

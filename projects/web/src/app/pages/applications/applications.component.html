@@ -1,7 +1,8 @@
 <div class="rf-dash-shell" [class.light-mode]="!isDarkMode">
   <nav class="rf-topnav">
     <div class="rf-topnav-left">
-      <a routerLink="/dashboard" class="rf-topnav-logo"><span class="rf-logo-mark"></span><span class="rf-logo-text">ResumeFlow</span></a>
+      <a routerLink="/dashboard" class="rf-topnav-logo"><span class="rf-logo-mark"></span><span
+          class="rf-logo-text">ResumeFlow</span></a>
       <div class="rf-topnav-links">
         <a *ngFor="let item of navItems" class="rf-topnav-item" [routerLink]="item.route" routerLinkActive="active">
           <mat-icon *ngIf="item.icon === 'grid'">dashboard</mat-icon>
@@ -15,14 +16,25 @@
       </div>
     </div>
     <div class="rf-topnav-right">
-      <button class="rf-theme-btn" (click)="toggleTheme()"><mat-icon>{{ isDarkMode ? 'light_mode' : 'dark_mode' }}</mat-icon></button>
+      <button class="rf-theme-btn" (click)="toggleTheme()"><mat-icon>{{ isDarkMode ? 'light_mode' : 'dark_mode'
+          }}</mat-icon></button>
       <button class="rf-upgrade-pill"><mat-icon>star</mat-icon><span>Upgrade to Pro</span></button>
       <button class="rf-user" [matMenuTriggerFor]="userMenu">
         <span class="rf-avatar">{{ getUserInitial() }}</span>
-        <span class="rf-user-info"><span class="rf-user-name">{{ user?.name || 'User' }}</span><span class="rf-user-email">Premium Plan</span></span>
+        <span class="rf-user-info"><span class="rf-user-name">{{ user?.name || 'User' }}</span><span
+            class="rf-user-email">Premium Plan</span></span>
         <mat-icon class="rf-chevron">expand_more</mat-icon>
       </button>
-      <mat-menu #userMenu="matMenu"><button mat-menu-item (click)="logout()"><mat-icon>logout</mat-icon><span>Logout</span></button></mat-menu>
+      <mat-menu #userMenu="matMenu">
+        <button mat-menu-item routerLink="/profile">
+          <mat-icon>person_outline</mat-icon>
+          <span>Profile</span>
+        </button>
+        <button mat-menu-item (click)="logout()">
+          <mat-icon>logout</mat-icon>
+          <span>Logout</span>
+        </button>
+      </mat-menu>
     </div>
   </nav>
 
@@ -48,7 +60,8 @@
           <span class="rf-stage" [class]="'status-' + (app.status || 'saved')">{{ statusLabel(app.status) }}</span>
           <div class="rf-row-actions">
             <button mat-stroked-button class="rf-btn-outline" (click)="editApplication(app)">Edit</button>
-            <button mat-icon-button class="rf-icon-danger" (click)="deleteApplication(app)" title="Delete"><mat-icon>delete_outline</mat-icon></button>
+            <button mat-icon-button class="rf-icon-danger" (click)="deleteApplication(app)"
+              title="Delete"><mat-icon>delete_outline</mat-icon></button>
           </div>
         </article>
       </section>

@@ -26,7 +26,7 @@
         [title]="isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'">
         <mat-icon>{{ isDarkMode ? 'light_mode' : 'dark_mode' }}</mat-icon>
       </button>
-
+      <button class="rf-upgrade-pill"><mat-icon>star</mat-icon><span>Upgrade to Pro</span></button>
       <button class="rf-user" [matMenuTriggerFor]="userMenu">
         <span class="rf-avatar">{{ getUserInitial() }}</span>
         <mat-icon class="rf-chevron">expand_more</mat-icon>

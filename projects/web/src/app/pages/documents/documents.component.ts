@@ -13,6 +13,7 @@ export class DocumentsComponent implements OnInit {
   loading = false;
   documents: ResumeDocument[] = [];
   selectedType: 'all' | 'resume' | 'cover_letter' = 'all';
+  searchTerm = '';
   createModalOpen = false;
   newTitle = '';
   newType: 'resume' | 'cover_letter' = 'resume';
@@ -37,7 +38,15 @@ export class DocumentsComponent implements OnInit {
   }
 
   get filteredDocuments(): ResumeDocument[] {
-    return this.selectedType === 'all' ? this.documents : this.documents.filter(doc => doc.type === this.selectedType);
+    let list = this.selectedType === 'all'
+      ? this.documents
+      : this.documents.filter(doc => doc.type === this.selectedType);
+
+    const term = this.searchTerm.trim().toLowerCase();
+    if (term) {
+      list = list.filter(doc => (doc.title || '').toLowerCase().includes(term));
+    }
+    return list;
   }
 
   restoreShellState(): void {
@@ -60,6 +69,10 @@ export class DocumentsComponent implements OnInit {
         this.loading = false;
       }
     });
+  }
+
+  clearSearch(): void {
+    this.searchTerm = '';
   }
 
   openCreateModal(): void {

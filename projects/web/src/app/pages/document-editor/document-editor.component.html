@@ -86,13 +86,18 @@
             </div>
 
             <p class="rf-template-hint" *ngIf="templateConfig.layout === 'sidebar' && sections.length">
-              First section (<strong>{{ sections[0].heading }}</strong>) shows in the colored sidebar; the rest show
-              in the main column.
+              Sections marked <strong>Sidebar</strong> below show in the colored sidebar; sections marked
+              <strong>Main</strong> show in the main column.
             </p>
           </div>
 
           <div class="rf-field-block">
+            <label class="rf-label">Add section</label>
             <div class="rf-add-section-row">
+              <select class="rf-input zone-select" [(ngModel)]="newSectionZone" style="max-width: 160px;">
+                <option value="sidebar">Add to Sidebar</option>
+                <option value="main">Add to Main</option>
+              </select>
               <input class="rf-input" [(ngModel)]="newSectionHeading" placeholder="New section heading (e.g. Projects)"
                 (keydown.enter)="addSection()" />
               <button class="rf-btn-primary" (click)="addSection()"><mat-icon>add</mat-icon>Add section</button>
@@ -106,6 +111,11 @@
               </button>
               <input class="rf-input heading" [(ngModel)]="section.heading" placeholder="Section heading"
                 (blur)="saveSectionHeading(section)" />
+              <select class="rf-input zone-select" [(ngModel)]="section.zone"
+                (change)="setSectionZone(section, section.zone)" style="max-width: 130px;">
+                <option value="sidebar">Sidebar</option>
+                <option value="main">Main</option>
+              </select>
               <div class="rf-section-move">
                 <button mat-icon-button title="Move up" (click)="moveSectionUp(i)" [disabled]="i === 0">
                   <mat-icon>arrow_upward</mat-icon>
@@ -164,6 +174,9 @@
                     <li class="rf-paper-empty" *ngIf="!section.items.length">Start typing on the left.</li>
                   </ul>
                 </div>
+                <div class="rf-paper-empty-doc" *ngIf="!sidebarSections.length">
+                  Add a section and mark it "Sidebar" — it will appear here.
+                </div>
               </aside>
               <div class="rf-paper-main">
                 <div class="rf-paper-section" *ngFor="let section of mainSections">
@@ -174,7 +187,7 @@
                   </ul>
                 </div>
                 <div class="rf-paper-empty-doc" *ngIf="!mainSections.length">
-                  Add a second section — it will appear here in the main column.
+                  Add a section and mark it "Main" — it will appear here in the main column.
                 </div>
               </div>
             </ng-container>

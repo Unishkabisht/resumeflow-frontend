@@ -18,10 +18,19 @@
     <div class="rf-topnav-right">
       <button class="rf-theme-btn" (click)="toggleTheme()"><mat-icon>{{ isDarkMode ? 'light_mode' : 'dark_mode'
           }}</mat-icon></button>
+      <button class="rf-upgrade-pill"><mat-icon>star</mat-icon><span>Upgrade to Pro</span></button>
       <button class="rf-user" [matMenuTriggerFor]="userMenu"><span class="rf-avatar">{{ getUserInitial()
           }}</span><mat-icon class="rf-chevron">expand_more</mat-icon></button>
-      <mat-menu #userMenu="matMenu"><button mat-menu-item
-          (click)="logout()"><mat-icon>logout</mat-icon><span>Logout</span></button></mat-menu>
+      <mat-menu #userMenu="matMenu" [class]="isDarkMode ? 'rf-menu-dark' : 'rf-menu-light'">
+        <button mat-menu-item routerLink="/profile">
+          <mat-icon>person_outline</mat-icon>
+          <span>Profile</span>
+        </button>
+        <button mat-menu-item (click)="logout()">
+          <mat-icon>logout</mat-icon>
+          <span>Logout</span>
+        </button>
+      </mat-menu>
     </div>
   </nav>
 

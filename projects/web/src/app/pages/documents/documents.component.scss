@@ -139,3 +139,23 @@
         box-shadow: 0 0 0 3px rgba(255, 114, 86, 0.14);
     }
 }
+
+.rf-search-row {
+    margin-bottom: 16px;
+}
+
+.rf-search-box {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    max-width: 420px;
+    padding: 0 12px;
+    border-radius: 10px;
+    border: 1px solid var(--rf-border, rgba(255, 255, 255, 0.12));
+
+    .rf-input {
+        border: none;
+        background: transparent;
+        flex: 1;
+    }
+}

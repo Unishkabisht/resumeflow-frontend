@@ -8,6 +8,8 @@ import { TemplateService } from '../../shared/services/template.service';
 import { ResumeTemplate, ResumeTemplateService, TemplateConfig } from '../../shared/services/resume-template.service';
 import { BrowserExportService } from '../../shared/services/browser-export.service';
 
+type SectionZone = 'sidebar' | 'main';
+
 interface EditableItem {
   id?: number;
   content: string;
@@ -22,6 +24,7 @@ interface EditableSection {
   items: EditableItem[];
   collapsed?: boolean;
   saving?: boolean;
+  zone: SectionZone;
 }
 
 type EditorTab = 'editor' | 'versions' | 'sharing';
@@ -59,6 +62,7 @@ export class DocumentEditorComponent implements OnInit, OnDestroy {
   exportingDocx = false;
 
   newSectionHeading = '';
+  newSectionZone: SectionZone = 'main';
 
   navItems = [
     { label: 'Dashboard', icon: 'grid', route: '/dashboard' },
@@ -106,7 +110,7 @@ export class DocumentEditorComponent implements OnInit, OnDestroy {
   loadTemplates(): void {
     this.templateService.list().subscribe({
       next: (res) => { this.templates = res.data || []; this.applyTemplateConfig(); },
-      error: () => {  }
+      error: () => { }
     });
   }
 
@@ -117,10 +121,11 @@ export class DocumentEditorComponent implements OnInit, OnDestroy {
         this.document = doc;
         this.title = doc.title;
         this.selectedTemplateId = doc.templateId ?? null;
-        this.sections = (doc.sections || [])
+        const rawSections = (doc.sections || [])
           .slice()
-          .sort((a, b) => (a.position ?? 0) - (b.position ?? 0))
-          .map((section: any) => this.toEditableSection(section));
+          .sort((a, b) => (a.position ?? 0) - (b.position ?? 0));
+        this.sections = rawSections.map((section: any, idx: number) =>
+          this.toEditableSection(section, idx));
         this.applyTemplateConfig();
         this.loading = false;
         this.loadVersions();
@@ -133,7 +138,26 @@ export class DocumentEditorComponent implements OnInit, OnDestroy {
     });
   }
 
-  private toEditableSection(section: any): EditableSection {
+  private zoneStorageKey(): string {
+    return `rf_section_zones_${this.documentId}`;
+  }
+
+  private loadZoneMap(): Record<number, SectionZone> {
+    try {
+      const raw = localStorage.getItem(this.zoneStorageKey());
+      return raw ? JSON.parse(raw) : {};
+    } catch {
+      return {};
+    }
+  }
+
+  private saveZoneMap(): void {
+    const map: Record<number, SectionZone> = {};
+    this.sections.forEach(s => { if (s.id) map[s.id] = s.zone; });
+    localStorage.setItem(this.zoneStorageKey(), JSON.stringify(map));
+  }
+
+  private toEditableSection(section: any, fallbackIndex: number): EditableSection {
     const items = (section.items || [])
       .slice()
       .sort((a: any, b: any) => (a.position ?? 0) - (b.position ?? 0))
@@ -142,11 +166,22 @@ export class DocumentEditorComponent implements OnInit, OnDestroy {
         content: item.content || '',
         position: item.position ?? idx
       }));
+
+    const zoneMap = this.loadZoneMap();
+    let zone: SectionZone;
+    if (section.id && zoneMap[section.id]) {
+      zone = zoneMap[section.id];
+    } else {
+      // backward compatibility: first section defaults to sidebar, rest to main
+      zone = fallbackIndex === 0 ? 'sidebar' : 'main';
+    }
+
     return {
       id: section.id,
       heading: section.heading || 'Section',
       position: section.position ?? 0,
-      items: items.length ? items : []
+      items: items.length ? items : [],
+      zone
     };
   }
 
@@ -165,11 +200,17 @@ export class DocumentEditorComponent implements OnInit, OnDestroy {
   }
 
   get sidebarSections(): EditableSection[] {
-    return this.sections.length ? [this.sections[0]] : [];
+    return this.sections.filter(s => s.zone === 'sidebar');
   }
 
   get mainSections(): EditableSection[] {
-    return this.sections.length > 1 ? this.sections.slice(1) : [];
+    return this.sections.filter(s => s.zone === 'main');
+  }
+
+  setSectionZone(section: EditableSection, zone: SectionZone): void {
+    section.zone = zone;
+    this.saveZoneMap();
+    this.versionTrigger$.next();
   }
 
   saveTitle(): void {
@@ -207,14 +248,17 @@ export class DocumentEditorComponent implements OnInit, OnDestroy {
 
   addSection(): void {
     const heading = this.newSectionHeading.trim() || 'Custom Section';
+    const zone = this.newSectionZone;
     this.flow.createSection(this.documentId, { type: 'custom', label: heading }).subscribe({
       next: created => {
         this.sections.push({
           id: created.id,
           heading: created.heading || heading,
           position: created.position ?? this.sections.length,
-          items: []
+          items: [],
+          zone
         });
+        this.saveZoneMap();
         this.newSectionHeading = '';
         this.versionTrigger$.next();
       },
@@ -249,6 +293,7 @@ export class DocumentEditorComponent implements OnInit, OnDestroy {
     this.flow.deleteSection(this.documentId, section.id).subscribe({
       next: () => {
         this.sections.splice(index, 1);
+        this.saveZoneMap();
         this.toast.success('Section removed.');
         this.versionTrigger$.next();
       },
@@ -355,7 +400,7 @@ export class DocumentEditorComponent implements OnInit, OnDestroy {
   private snapshotVersion(): void {
     this.flow.createVersion(this.documentId).subscribe({
       next: version => { this.versions = [version, ...this.versions]; },
-      error: () => {  }
+      error: () => { }
     });
   }
 

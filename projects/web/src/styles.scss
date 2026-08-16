@@ -1579,3 +1579,42 @@ body {
         padding: 32px 24px 26px;
     }
 }
+
+// --- ResumeFlow dark themed dropdown menu (mat-menu) ---
+.mat-mdc-menu-panel {
+    background: var(--rf-bg-elev) !important;
+    border: 1px solid var(--rf-line) !important;
+    border-radius: 10px !important;
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.45) !important;
+}
+
+.mat-mdc-menu-panel .mat-mdc-menu-item {
+    color: var(--rf-text) !important;
+    font-size: 14px;
+}
+
+.mat-mdc-menu-panel .mat-mdc-menu-item .mat-icon {
+    color: var(--rf-text-dim) !important;
+    margin-right: 8px;
+}
+
+.mat-mdc-menu-panel .mat-mdc-menu-item:hover:not([disabled]) {
+    background: var(--rf-bg-elev-2) !important;
+}
+
+.mat-mdc-menu-panel .mat-mdc-menu-item:hover .mat-icon {
+    color: var(--orange) !important;
+}
+
+.mat-menu-panel {
+    background: var(--rf-bg-elev) !important;
+    border: 1px solid var(--rf-line) !important;
+}
+
+.mat-menu-panel .mat-menu-item {
+    color: var(--rf-text) !important;
+}
+
+.mat-menu-panel .mat-menu-item:hover:not([disabled]) {
+    background: var(--rf-bg-elev-2) !important;
+}
