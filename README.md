@@ -1,4 +1,4 @@
-# ResumeFlow 🚀
+# ResumeFlow
 
 <div align="center">
 
@@ -12,26 +12,26 @@
 
 **A modern, intuitive, full-featured web application to design, manage, version, and export professional resumes effortlessly.**
 
-[Explore Features](#-key-features) • [Tech Stack](#-tech-stack) • [Project Structure](#-project-structure) • [Available Scripts](#-available-scripts)
+[Explore Features](#key-features) • [Tech Stack](#tech-stack) • [Project Structure](#project-structure)
 
 </div>
 
 ---
 
-## ✨ Overview
+## Overview
 
 **ResumeFlow** is a dynamic resume-crafting suite built with Angular. Designed for professionals and job seekers, ResumeFlow enables real-time document editing, multi-template switching, version management, job application tracking, and high-fidelity client-side PDF/DOCX downloads with zero data loss.
 
 ---
 
-## 🌟 Key Features
+## Key Features
 
-### 📄 Real-Time Document Editor
+### Real-Time Document Editor
 - **Interactive Live Preview**: Instant visual feedback as you type content, customize typography, reorder sections, and adjust spacing.
 - **Section Management**: Add, remove, and reorganize standard and custom sections (Experience, Education, Skills, Projects, Certifications, etc.).
 - **Dynamic Content Formatting**: Rich text and bullet-point itemization built for clean readability and formatting.
 
-### 🎨 Diverse Professional Templates
+### Diverse Professional Templates
 - Switch between multiple expertly designed resume presets:
   - **Modern Split**: Contemporary dual-column layout with visual accents.
   - **Minimal Clean**: Streamlined, elegant, high-signal typography.
@@ -39,26 +39,26 @@
   - **Executive**: Structured for leadership roles and enterprise portfolios.
   - **Creative**: Balanced color palettes and bold headline styling.
 
-### 📥 Client-Side Multi-Format Export
+### Client-Side Multi-Format Export
 - **One-Click PDF Export**: High-resolution browser-side PDF generation powered by `html2pdf.js`.
 - **DOCX Generation**: Native Microsoft Word (`.docx`) file generation utilizing `docx` and `file-saver`.
 - **Export History**: Keep a digital log of all your exported files.
 
-### 🕒 Version Control & Snapshots
+### Version Control & Snapshots
 - Create custom document snapshots and restore previous iterations at any time.
 - Compare revisions to tailor specific variations for different job postings.
 
-### 🔐 Authentication & Security
+### Authentication & Security
 - Complete authentication suite: Sign Up, Login, Forgot Password, and Password Reset.
 - JWT Interceptor with automatic token management.
 - Protected routes using Angular route guards (`AuthGuard` & `NoAuthGuard`).
 
-### 🌓 Premium Glassmorphism UI & Dark Mode
+### Premium Glassmorphism UI & Dark Mode
 - Polished modern UI with glassmorphism effects, smooth micro-interactions, responsive navigation, and seamless light/dark theme switching.
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 - **Framework**: [Angular 13](https://angular.io/)
 - **Language**: [TypeScript](https://www.typescriptlang.org/)
@@ -73,7 +73,7 @@
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```text
 resumeflow-frontend/
@@ -110,7 +110,3 @@ resumeflow-frontend/
 ├── package.json                     # Dependencies and scripts
 └── tsconfig.json                    # TypeScript compiler configuration
 ```
-
----
----
-
