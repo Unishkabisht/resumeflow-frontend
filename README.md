@@ -2,7 +2,7 @@
 
 <div align="center">
 
-![ResumeFlow Banner](https://img.shields.io/badge/ResumeFlow-AI--Powered%20Resume%20Builder-6366f1?style=for-the-badge&logo=angular&logoColor=white)
+![ResumeFlow Banner](https://img.shields.io/badge/ResumeFlow-Professional%20Resume%20Builder-6366f1?style=for-the-badge&logo=angular&logoColor=white)
 
 [![Angular](https://img.shields.io/badge/Angular-13.3-dd0031?style=flat-square&logo=angular&logoColor=white)](https://angular.io/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-4.6-3178c6?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
@@ -10,7 +10,7 @@
 [![SCSS](https://img.shields.io/badge/Styles-SCSS-c69?style=flat-square&logo=sass&logoColor=white)](https://sass-lang.com/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg?style=flat-square)](LICENSE)
 
-**A modern, intuitive, full-featured web application to design, manage, version, and export ATS-friendly resumes effortlessly.**
+**A modern, intuitive, full-featured web application to design, manage, version, and export professional resumes effortlessly.**
 
 [Explore Features](#-key-features) • [Getting Started](#-getting-started) • [Tech Stack](#-tech-stack) • [Project Structure](#-project-structure)
 
@@ -29,7 +29,7 @@
 ### 📄 Real-Time Document Editor
 - **Interactive Live Preview**: Instant visual feedback as you type content, customize typography, reorder sections, and adjust spacing.
 - **Section Management**: Add, remove, and reorganize standard and custom sections (Experience, Education, Skills, Projects, Certifications, etc.).
-- **Dynamic Content Formatting**: Rich text and bullet-point itemization built for ATS readability.
+- **Dynamic Content Formatting**: Rich text and bullet-point itemization built for clean readability and formatting.
 
 ### 🎨 Diverse Professional Templates
 - Switch between multiple expertly designed resume presets:
