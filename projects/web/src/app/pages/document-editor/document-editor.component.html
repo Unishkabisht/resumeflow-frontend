@@ -22,8 +22,16 @@
         <span class="rf-avatar">{{ getUserInitial() }}</span>
         <mat-icon class="rf-chevron">expand_more</mat-icon>
       </button>
-      <mat-menu #userMenu="matMenu"><button mat-menu-item
-          (click)="logout()"><mat-icon>logout</mat-icon><span>Logout</span></button></mat-menu>
+      <mat-menu #userMenu="matMenu" [class]="isDarkMode ? 'rf-menu-dark' : 'rf-menu-light'">
+        <button mat-menu-item routerLink="/profile">
+          <mat-icon>person_outline</mat-icon>
+          <span>Profile</span>
+        </button>
+        <button mat-menu-item (click)="logout()">
+          <mat-icon>logout</mat-icon>
+          <span>Logout</span>
+        </button>
+      </mat-menu>
     </div>
   </nav>
 
@@ -89,6 +97,28 @@
               Sections marked <strong>Sidebar</strong> below show in the colored sidebar; sections marked
               <strong>Main</strong> show in the main column.
             </p>
+          </div>
+
+          <div class="rf-field-block" *ngIf="templateConfig.showPhoto">
+            <label class="rf-label">Profile photo</label>
+            <div class="rf-photo-row">
+              <div class="rf-photo-preview">
+                <img *ngIf="photoDataUrl" [src]="photoDataUrl" alt="Profile photo" />
+                <mat-icon *ngIf="!photoDataUrl">person</mat-icon>
+              </div>
+              <div class="rf-photo-controls">
+                <label class="rf-btn-outline rf-photo-upload-btn">
+                  <mat-icon>upload</mat-icon>{{ photoUploading ? 'Uploading…' : (photoDataUrl ? 'Change photo' : 'Upload
+                  photo') }}
+                  <input type="file" accept="image/*" (change)="onPhotoSelected($event)" hidden />
+                </label>
+                <button class="rf-btn-outline danger" *ngIf="photoDataUrl" (click)="removePhoto()">
+                  <mat-icon>delete_outline</mat-icon>Remove
+                </button>
+              </div>
+            </div>
+            <p class="rf-photo-error" *ngIf="photoError">{{ photoError }}</p>
+            <p class="rf-photo-hint">JPG or PNG, under 2MB. This template shows a circular photo in the sidebar.</p>
           </div>
 
           <div class="rf-field-block">
@@ -166,6 +196,8 @@
 
             <ng-container *ngIf="templateConfig.layout === 'sidebar'; else simpleLayout">
               <aside class="rf-paper-sidebar">
+                <img *ngIf="templateConfig.showPhoto && photoDataUrl" [src]="photoDataUrl" class="rf-paper-photo"
+                  alt="Profile photo" />
                 <h2 class="rf-paper-name">{{ title || 'Untitled Resume' }}</h2>
                 <div class="rf-paper-section" *ngFor="let section of sidebarSections">
                   <h3>{{ section.heading || 'Section' }}</h3>
@@ -194,6 +226,8 @@
 
             <ng-template #simpleLayout>
               <div class="rf-paper-body">
+                <img *ngIf="templateConfig.showPhoto && photoDataUrl" [src]="photoDataUrl" class="rf-paper-photo simple"
+                  alt="Profile photo" />
                 <h2 class="rf-paper-name">{{ title || 'Untitled Resume' }}</h2>
                 <div class="rf-paper-section" *ngFor="let section of sections">
                   <h3>{{ section.heading || 'Section' }}</h3>

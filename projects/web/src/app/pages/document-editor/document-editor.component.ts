@@ -64,6 +64,10 @@ export class DocumentEditorComponent implements OnInit, OnDestroy {
   newSectionHeading = '';
   newSectionZone: SectionZone = 'main';
 
+  photoDataUrl: string | null = null;
+  photoUploading = false;
+  photoError = '';
+
   navItems = [
     { label: 'Dashboard', icon: 'grid', route: '/dashboard' },
     { label: 'Documents', icon: 'file', route: '/documents' },
@@ -88,6 +92,7 @@ export class DocumentEditorComponent implements OnInit, OnDestroy {
     this.documentId = Number(this.route.snapshot.paramMap.get('id'));
     this.loadTemplates();
     this.loadDocument();
+    this.loadPhoto();
 
     this.versionTrigger$
       .pipe(debounceTime(2500))
@@ -172,7 +177,6 @@ export class DocumentEditorComponent implements OnInit, OnDestroy {
     if (section.id && zoneMap[section.id]) {
       zone = zoneMap[section.id];
     } else {
-      // backward compatibility: first section defaults to sidebar, rest to main
       zone = fallbackIndex === 0 ? 'sidebar' : 'main';
     }
 
@@ -212,6 +216,66 @@ export class DocumentEditorComponent implements OnInit, OnDestroy {
     this.saveZoneMap();
     this.versionTrigger$.next();
   }
+
+  // ---------- Photo upload ----------
+
+  private photoStorageKey(): string {
+    return `rf_photo_${this.documentId}`;
+  }
+
+  loadPhoto(): void {
+    try {
+      this.photoDataUrl = localStorage.getItem(this.photoStorageKey());
+    } catch {
+      this.photoDataUrl = null;
+    }
+  }
+
+  onPhotoSelected(event: Event): void {
+    this.photoError = '';
+    const input = event.target as HTMLInputElement;
+    const file = input.files && input.files[0];
+    if (!file) return;
+
+    if (!file.type.startsWith('image/')) {
+      this.photoError = 'Please choose an image file.';
+      return;
+    }
+    if (file.size > 2 * 1024 * 1024) {
+      this.photoError = 'Image must be under 2MB.';
+      return;
+    }
+
+    this.photoUploading = true;
+    const reader = new FileReader();
+    reader.onload = () => {
+      const dataUrl = reader.result as string;
+      this.photoDataUrl = dataUrl;
+      try {
+        localStorage.setItem(this.photoStorageKey(), dataUrl);
+        this.toast.success('Photo added.');
+      } catch {
+        this.photoError = 'Could not save photo (storage full).';
+      }
+      this.photoUploading = false;
+      this.versionTrigger$.next();
+    };
+    reader.onerror = () => {
+      this.photoUploading = false;
+      this.photoError = 'Could not read that image.';
+    };
+    reader.readAsDataURL(file);
+    input.value = '';
+  }
+
+  removePhoto(): void {
+    this.photoDataUrl = null;
+    localStorage.removeItem(this.photoStorageKey());
+    this.toast.info('Photo removed.');
+    this.versionTrigger$.next();
+  }
+
+  // ---------- end photo upload ----------
 
   saveTitle(): void {
     if (!this.title.trim()) return;

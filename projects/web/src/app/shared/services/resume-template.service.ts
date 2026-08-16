@@ -5,6 +5,7 @@ export interface TemplateConfig {
     accent: string;
     font?: string;
     density?: 'comfortable' | 'compact';
+    showPhoto?: boolean;
 }
 
 export interface ResumeTemplate {
