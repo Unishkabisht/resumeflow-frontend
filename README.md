@@ -48,9 +48,6 @@
 - Create custom document snapshots and restore previous iterations at any time.
 - Compare revisions to tailor specific variations for different job postings.
 
-### 📊 Job Application Tracker
-- Integrated application pipeline to track target companies, job roles, interview stages, deadlines, and linked resumes.
-
 ### 🔐 Authentication & Security
 - Complete authentication suite: Sign Up, Login, Forgot Password, and Password Reset.
 - JWT Interceptor with automatic token management.
