@@ -1,0 +1,59 @@
+<div class="rf-dash-shell" [class.light-mode]="!isDarkMode">
+  <nav class="rf-topnav">
+    <div class="rf-topnav-left">
+      <a routerLink="/dashboard" class="rf-topnav-logo"><span class="rf-logo-mark"></span><span
+          class="rf-logo-text">ResumeFlow</span></a>
+      <div class="rf-topnav-links">
+        <a *ngFor="let item of navItems" class="rf-topnav-item" [routerLink]="item.route" routerLinkActive="active">
+          <mat-icon *ngIf="item.icon === 'grid'">dashboard</mat-icon>
+          <mat-icon *ngIf="item.icon === 'file'">description</mat-icon>
+          <mat-icon *ngIf="item.icon === 'layout'">dashboard_customize</mat-icon>
+          <mat-icon *ngIf="item.icon === 'chart'">bar_chart</mat-icon>
+          <mat-icon *ngIf="item.icon === 'share'">link</mat-icon>
+          <mat-icon *ngIf="item.icon === 'export'">download</mat-icon>
+          <span>{{ item.label }}</span>
+        </a>
+      </div>
+    </div>
+    <div class="rf-topnav-right">
+      <button class="rf-theme-btn" (click)="toggleTheme()"><mat-icon>{{ isDarkMode ? 'light_mode' : 'dark_mode'
+          }}</mat-icon></button>
+      <button class="rf-user" [matMenuTriggerFor]="userMenu"><span class="rf-avatar">{{ getUserInitial()
+          }}</span><mat-icon class="rf-chevron">expand_more</mat-icon></button>
+      <mat-menu #userMenu="matMenu"><button mat-menu-item
+          (click)="logout()"><mat-icon>logout</mat-icon><span>Logout</span></button></mat-menu>
+    </div>
+  </nav>
+
+  <main class="rf-content">
+    <div class="rf-page-head rf-page-head-split">
+      <div>
+        <h1>Shared Links</h1>
+        <p>Create a share link after you have a document ready.</p>
+      </div>
+    </div>
+
+    <div class="rf-loading" *ngIf="loading">Loading share workspace...</div>
+
+    <div class="rf-empty-state" *ngIf="!loading && !documents.length">
+      <div class="rf-empty-icon"><mat-icon>link_off</mat-icon></div>
+      <h3>Nothing to share yet</h3>
+      <p>Create a document first, then come back here to generate a public share link.</p>
+    </div>
+
+    <section class="rf-share-list" *ngIf="!loading && documents.length">
+      <article class="rf-share-row" *ngFor="let doc of documents">
+        <div class="rf-share-icon"><mat-icon>description</mat-icon></div>
+        <div class="rf-share-main">
+          <h3>{{ doc.title }}</h3>
+          <p *ngIf="!getShareFor(doc)">No share link created yet.</p>
+          <p *ngIf="getShareFor(doc)">{{ getShareFor(doc)?.shareUrl }}</p>
+        </div>
+        <button class="rf-btn-create-resume" *ngIf="!getShareFor(doc)"
+          (click)="createShare(doc)"><mat-icon>link</mat-icon>Create Link</button>
+        <button mat-stroked-button class="rf-btn-outline" *ngIf="getShareFor(doc)"
+          (click)="copyShare(getShareFor(doc)!)">Copy</button>
+      </article>
+    </section>
+  </main>
+</div>

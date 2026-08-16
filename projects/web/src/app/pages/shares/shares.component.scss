@@ -1,0 +1,59 @@
+@import '../documents/documents.component.scss';
+
+.rf-share-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.rf-share-row {
+    display: grid;
+    grid-template-columns: 44px 1fr auto;
+    align-items: center;
+    gap: 16px;
+    background: var(--rf-bg-elev);
+    border: 1px solid var(--rf-line);
+    border-radius: 16px;
+    padding: 16px;
+}
+
+.rf-share-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: rgba(196, 181, 253, 0.12);
+    color: var(--lavender);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.rf-share-main {
+    min-width: 0;
+
+    h3 {
+        font-family: var(--font-rf-display);
+        color: var(--rf-text);
+        font-size: 1rem;
+        margin-bottom: 3px;
+    }
+
+    p {
+        color: var(--rf-text-faint);
+        font-size: 0.82rem;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+}
+
+@media (max-width: 720px) {
+    .rf-share-row {
+        grid-template-columns: 44px 1fr;
+    }
+
+    .rf-share-row button {
+        grid-column: 2;
+        justify-self: start;
+    }
+}

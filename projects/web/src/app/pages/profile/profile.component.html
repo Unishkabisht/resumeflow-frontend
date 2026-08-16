@@ -1,0 +1,125 @@
+<div class="rf-dash-shell" [class.light-mode]="!isDarkMode">
+    <nav class="rf-topnav">
+        <div class="rf-topnav-left">
+            <a routerLink="/dashboard" class="rf-topnav-logo"><span class="rf-logo-mark"></span><span
+                    class="rf-logo-text">ResumeFlow</span></a>
+            <div class="rf-topnav-links">
+                <a *ngFor="let item of navItems" class="rf-topnav-item" [routerLink]="item.route"
+                    routerLinkActive="active">
+                    <mat-icon *ngIf="item.icon === 'grid'">dashboard</mat-icon>
+                    <mat-icon *ngIf="item.icon === 'file'">description</mat-icon>
+                    <mat-icon *ngIf="item.icon === 'layout'">dashboard_customize</mat-icon>
+                    <mat-icon *ngIf="item.icon === 'chart'">bar_chart</mat-icon>
+                    <mat-icon *ngIf="item.icon === 'share'">link</mat-icon>
+                    <mat-icon *ngIf="item.icon === 'export'">download</mat-icon>
+                    <span>{{ item.label }}</span>
+                </a>
+            </div>
+        </div>
+        <div class="rf-topnav-right">
+            <button class="rf-theme-btn" (click)="toggleTheme()"><mat-icon>{{ isDarkMode ? 'light_mode' : 'dark_mode'
+                    }}</mat-icon></button>
+            <button class="rf-user" [matMenuTriggerFor]="userMenu">
+                <span class="rf-avatar">{{ getUserInitial() }}</span>
+                <mat-icon class="rf-chevron">expand_more</mat-icon>
+            </button>
+            <mat-menu #userMenu="matMenu">
+                <button mat-menu-item routerLink="/profile">
+                    <mat-icon>person_outline</mat-icon><span>Profile</span>
+                </button>
+                <button mat-menu-item (click)="logout()">
+                    <mat-icon>logout</mat-icon><span>Logout</span>
+                </button>
+            </mat-menu>
+        </div>
+    </nav>
+
+    <main class="rf-content">
+        <div class="rf-page-head">
+            <div>
+                <h1>Profile</h1>
+                <p>Update your name and email, or change your password.</p>
+            </div>
+        </div>
+
+        <div class="rf-profile-tabs">
+            <button class="rf-tab" [class.active]="activeTab === 'details'" (click)="setTab('details')">
+                <mat-icon>person_outline</mat-icon>Profile
+            </button>
+            <button class="rf-tab" [class.active]="activeTab === 'password'" (click)="setTab('password')">
+                <mat-icon>lock_outline</mat-icon>Change password
+            </button>
+        </div>
+
+        <section class="rf-profile-card" *ngIf="activeTab === 'details'">
+            <div class="rf-profile-header">
+                <span class="rf-profile-avatar">{{ getUserInitial() }}</span>
+                <div>
+                    <h3>{{ user?.name || 'User' }}</h3>
+                    <p>{{ profileForm.value.email || user?.email }}</p>
+                </div>
+            </div>
+
+            <form [formGroup]="profileForm" (ngSubmit)="onUpdateProfile()" class="rf-form">
+                <div class="rf-form-row">
+                    <label class="rf-label">Full name</label>
+                    <input class="rf-input" formControlName="fullName" placeholder="Your full name" />
+                    <span class="rf-form-error"
+                        *ngIf="profileForm.get('fullName')?.touched && profileForm.get('fullName')?.invalid">
+                        Full name is required.
+                    </span>
+                </div>
+
+                <div class="rf-form-row">
+                    <label class="rf-label">Email address</label>
+                    <input class="rf-input" formControlName="email" placeholder="you@example.com" />
+                    <span class="rf-form-error"
+                        *ngIf="profileForm.get('email')?.touched && profileForm.get('email')?.invalid">
+                        Enter a valid email address.
+                    </span>
+                </div>
+
+                <button class="rf-btn-primary" type="submit" [disabled]="profileForm.invalid || savingProfile">
+                    {{ savingProfile ? 'Saving…' : 'Save changes' }}
+                </button>
+            </form>
+        </section>
+
+        <section class="rf-profile-card" *ngIf="activeTab === 'password'">
+            <div class="rf-profile-header">
+                <span class="rf-profile-avatar"><mat-icon>lock</mat-icon></span>
+                <div>
+                    <h3>Change password</h3>
+                    <p>Use a password you don't use anywhere else.</p>
+                </div>
+            </div>
+
+            <form [formGroup]="passwordForm" (ngSubmit)="onChangePassword()" class="rf-form">
+                <div class="rf-form-row">
+                    <label class="rf-label">Current password</label>
+                    <input class="rf-input" type="password" formControlName="oldPassword" placeholder="••••••••" />
+                </div>
+
+                <div class="rf-form-row">
+                    <label class="rf-label">New password</label>
+                    <input class="rf-input" type="password" formControlName="newPassword"
+                        placeholder="At least 6 characters" />
+                    <span class="rf-form-error"
+                        *ngIf="passwordForm.get('newPassword')?.touched && passwordForm.get('newPassword')?.invalid">
+                        New password must be at least 6 characters.
+                    </span>
+                </div>
+
+                <div class="rf-form-row">
+                    <label class="rf-label">Confirm new password</label>
+                    <input class="rf-input" type="password" formControlName="confirmPassword"
+                        placeholder="Re-enter new password" />
+                </div>
+
+                <button class="rf-btn-primary" type="submit" [disabled]="passwordForm.invalid || savingPassword">
+                    {{ savingPassword ? 'Updating…' : 'Update password' }}
+                </button>
+            </form>
+        </section>
+    </main>
+</div>

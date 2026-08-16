@@ -1,0 +1,141 @@
+.rf-nav-shell {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+    padding: 18px 24px 0;
+
+    .rf-nav {
+        position: relative;
+        width: 100%;
+        max-width: 1180px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 12px 14px 12px 22px;
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.02));
+        -webkit-backdrop-filter: blur(20px) saturate(160%);
+        backdrop-filter: blur(20px) saturate(160%);
+        border-radius: 999px;
+        box-shadow:
+            0 1px 0 rgba(255, 255, 255, 0.14) inset,
+            0 10px 30px -10px rgba(0, 0, 0, 0.6);
+
+        .rf-logo {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            font-family: var(--font-rf-display);
+            font-weight: 700;
+            font-size: 1.15rem;
+            letter-spacing: -0.01em;
+            white-space: nowrap;
+            color: var(--rf-text);
+
+            .rf-logo-mark {
+                width: 22px;
+                height: 22px;
+                border-radius: 5px;
+                background: linear-gradient(135deg, var(--orange), var(--lavender));
+                display: inline-block;
+                flex-shrink: 0;
+            }
+        }
+
+        .rf-nav-links {
+            display: flex;
+            gap: 2px;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+
+            a {
+                display: inline-block;
+                font-size: 0.88rem;
+                font-weight: 500;
+                color: var(--rf-text-dim);
+                padding: 8px 16px;
+                border-radius: 999px;
+                text-decoration: none;
+                transition: color .25s ease, background .25s ease;
+
+                &:hover {
+                    color: var(--rf-text);
+                    background: rgba(255, 255, 255, 0.06);
+                }
+            }
+        }
+
+        .rf-nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+
+            .rf-btn-ghost {
+                font-size: 0.86rem;
+                font-weight: 500;
+                color: var(--rf-text-dim);
+                padding: 9px 16px;
+                border-radius: 999px;
+                text-decoration: none;
+                transition: color .2s ease, background .2s ease;
+
+                &:hover {
+                    color: var(--rf-text);
+                    background: rgba(255, 255, 255, 0.06);
+                }
+            }
+
+            .rf-btn-primary {
+                font-size: 0.86rem;
+                font-weight: 600;
+                color: #1a0d08;
+                background: var(--orange);
+                padding: 10px 20px;
+                border-radius: 999px;
+                text-decoration: none;
+                box-shadow: 0 4px 16px -4px rgba(255, 92, 57, 0.55);
+                transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
+                white-space: nowrap;
+
+                &:hover {
+                    transform: translateY(-1px);
+                    box-shadow: 0 6px 22px -4px rgba(255, 92, 57, 0.7);
+                    background: #ff6b46;
+                }
+            }
+        }
+
+        .rf-nav-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--rf-text);
+            cursor: pointer;
+        }
+    }
+
+    @media (max-width: 860px) {
+        .rf-nav {
+            .rf-nav-links {
+                display: none;
+            }
+
+            .rf-nav-actions {
+                .rf-btn-ghost {
+                    display: none;
+                }
+            }
+
+            .rf-nav-toggle {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+        }
+    }
+}

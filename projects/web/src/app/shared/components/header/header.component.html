@@ -1,0 +1,35 @@
+<div class="rf-nav-shell">
+    <nav class="rf-nav">
+        <a routerLink="/" class="rf-logo">
+            <span class="rf-logo-mark"></span>
+            ResumeFlow
+        </a>
+
+        <ul class="rf-nav-links">
+            <li><a routerLink="/" fragment="hero">Home</a></li>
+            <li><a routerLink="/" fragment="templates">Templates</a></li>
+            <li><a routerLink="/" fragment="features">Features</a></li>
+            <li><a routerLink="/" fragment="testimonials">Testimonials</a></li>
+            <li><a routerLink="/" fragment="faq">FAQ</a></li>
+        </ul>
+
+        <div class="rf-nav-actions">
+            <a routerLink="/login" class="rf-btn-ghost">Log in</a>
+            <a routerLink="/signup" class="rf-btn-primary">Get Started</a>
+        </div>
+
+        <button class="rf-nav-toggle" [matMenuTriggerFor]="mobileMenu" aria-label="Menu">
+            <mat-icon>menu</mat-icon>
+        </button>
+        <mat-menu #mobileMenu="matMenu">
+            <a mat-menu-item routerLink="/" fragment="hero">Home</a>
+            <a mat-menu-item routerLink="/" fragment="templates">Templates</a>
+            <a mat-menu-item routerLink="/" fragment="features">Features</a>
+            <a mat-menu-item routerLink="/" fragment="testimonials">Testimonials</a>
+            <a mat-menu-item routerLink="/" fragment="faq">FAQ</a>
+            <mat-divider></mat-divider>
+            <a mat-menu-item routerLink="/login">Log In</a>
+            <a mat-menu-item routerLink="/signup">Sign Up</a>
+        </mat-menu>
+    </nav>
+</div>

@@ -1,0 +1,109 @@
+<div class="rf-dash-shell" [class.light-mode]="!isDarkMode">
+  <nav class="rf-topnav">
+    <div class="rf-topnav-left">
+      <a routerLink="/dashboard" class="rf-topnav-logo">
+        <span class="rf-logo-mark"></span>
+        <span class="rf-logo-text">ResumeFlow</span>
+      </a>
+      <div class="rf-topnav-links">
+        <a *ngFor="let item of navItems" class="rf-topnav-item" [routerLink]="item.route" routerLinkActive="active">
+          <mat-icon *ngIf="item.icon === 'grid'">dashboard</mat-icon>
+          <mat-icon *ngIf="item.icon === 'file'">description</mat-icon>
+          <mat-icon *ngIf="item.icon === 'layout'">dashboard_customize</mat-icon>
+          <mat-icon *ngIf="item.icon === 'chart'">bar_chart</mat-icon>
+          <mat-icon *ngIf="item.icon === 'share'">link</mat-icon>
+          <mat-icon *ngIf="item.icon === 'export'">download</mat-icon>
+          <span>{{ item.label }}</span>
+        </a>
+      </div>
+    </div>
+    <div class="rf-topnav-right">
+      <button class="rf-theme-btn" (click)="toggleTheme()"
+        [title]="isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'">
+        <mat-icon>{{ isDarkMode ? 'light_mode' : 'dark_mode' }}</mat-icon>
+      </button>
+      <button class="rf-upgrade-pill"><mat-icon>star</mat-icon><span>Upgrade to Pro</span></button>
+      <button class="rf-user" [matMenuTriggerFor]="userMenu">
+        <span class="rf-avatar">{{ getUserInitial() }}</span>
+        <span class="rf-user-info">
+          <span class="rf-user-name">{{ user?.name || 'User' }}</span>
+          <span class="rf-user-email">Premium Plan</span>
+        </span>
+        <mat-icon class="rf-chevron">expand_more</mat-icon>
+      </button>
+      <mat-menu #userMenu="matMenu">
+        <button mat-menu-item (click)="logout()"><mat-icon>logout</mat-icon><span>Logout</span></button>
+      </mat-menu>
+    </div>
+  </nav>
+
+  <main class="rf-main">
+    <div class="rf-content">
+      <div class="rf-page-head rf-page-head-split">
+        <div>
+          <h1>Documents</h1>
+          <p>Create, duplicate, and manage your resumes and cover letters.</p>
+        </div>
+        <button class="rf-btn-create-resume" (click)="openCreateModal()"><mat-icon>add</mat-icon>New Document</button>
+      </div>
+
+      <div class="rf-filter-row">
+        <button class="rf-chip" [class.active]="selectedType === 'all'" (click)="selectedType = 'all'">All</button>
+        <button class="rf-chip" [class.active]="selectedType === 'resume'"
+          (click)="selectedType = 'resume'">Resumes</button>
+        <button class="rf-chip" [class.active]="selectedType === 'cover_letter'"
+          (click)="selectedType = 'cover_letter'">Cover letters</button>
+      </div>
+
+      <div class="rf-loading" *ngIf="loading">Loading documents...</div>
+
+      <div class="rf-doc-grid" *ngIf="!loading && filteredDocuments.length">
+        <article class="rf-document-card" *ngFor="let doc of filteredDocuments" (click)="editDocument(doc)">
+          <div class="rf-doc-thumb">
+            <mat-icon>{{ doc.type === 'resume' ? 'description' : 'article' }}</mat-icon>
+            <span>{{ doc.type === 'resume' ? 'Resume' : 'Cover Letter' }}</span>
+          </div>
+          <div class="rf-doc-body">
+            <h3>{{ doc.title }}</h3>
+            <p>Updated {{ formatDate(doc.updatedAt) }}</p>
+          </div>
+          <div class="rf-doc-actions">
+            <button mat-stroked-button class="rf-btn-outline"
+              (click)="duplicateDocument(doc); $event.stopPropagation()">Duplicate</button>
+            <button mat-icon-button class="rf-icon-danger" (click)="deleteDocument(doc); $event.stopPropagation()"
+              title="Delete">
+              <mat-icon>delete_outline</mat-icon>
+            </button>
+          </div>
+        </article>
+      </div>
+
+      <div class="rf-empty-state" *ngIf="!loading && !filteredDocuments.length">
+        <div class="rf-empty-icon"><mat-icon>description</mat-icon></div>
+        <h3>No documents here yet</h3>
+        <p>Create your first resume or cover letter and it will appear in this workspace.</p>
+      </div>
+    </div>
+  </main>
+</div>
+
+<div class="rf-modal-overlay" *ngIf="createModalOpen" (click)="closeCreateModal()">
+  <mat-card class="rf-modal-box" (click)="$event.stopPropagation()">
+    <button mat-icon-button class="rf-modal-close" (click)="closeCreateModal()"><mat-icon>close</mat-icon></button>
+    <h2 class="rf-modal-title">Create Document</h2>
+    <p class="rf-modal-sub">This creates a backend document record you can later connect to an editor.</p>
+    <label class="rf-label">Title</label>
+    <input class="rf-input" [(ngModel)]="newTitle" placeholder="Frontend Developer Resume" />
+    <label class="rf-label">Type</label>
+    <select class="rf-input" [(ngModel)]="newType">
+      <option value="resume">Resume</option>
+      <option value="cover_letter">Cover letter</option>
+    </select>
+    <div class="rf-modal-footer">
+      <div class="rf-modal-footer-btns">
+        <button mat-stroked-button (click)="closeCreateModal()">Cancel</button>
+        <button mat-flat-button class="rf-btn-create-resume" (click)="createDocument()">Create</button>
+      </div>
+    </div>
+  </mat-card>
+</div>

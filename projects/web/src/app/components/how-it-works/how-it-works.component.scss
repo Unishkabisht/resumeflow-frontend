@@ -1,0 +1,60 @@
+.rf-how {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 100px 32px;
+
+    .rf-steps-list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 24px;
+
+        @media (max-width: 860px) {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    .rf-step-card {
+        border-radius: 18px;
+        border: 1px solid var(--rf-line-strong);
+        background: var(--rf-bg-elev);
+        padding: 28px 26px;
+        transition: transform .3s ease, border-color .3s ease;
+
+        &:hover {
+            transform: translateY(-4px);
+            border-color: rgba(255, 92, 57, 0.4);
+        }
+
+        .rf-step-num {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            background: rgba(255, 92, 57, 0.1);
+            border: 1px solid rgba(255, 92, 57, 0.22);
+            color: var(--orange);
+            font-family: var(--font-rf-display);
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        h3 {
+            font-family: var(--font-rf-body);
+            font-size: 1.08rem;
+            font-weight: 600;
+            color: var(--rf-text);
+            margin: 14px 0 10px;
+        }
+
+        p {
+            font-size: 0.9rem;
+            color: var(--rf-text-faint);
+            line-height: 1.55;
+        }
+    }
+}

@@ -1,0 +1,93 @@
+@import '../documents/documents.component.scss';
+
+.rf-app-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.rf-app-row {
+    display: grid;
+    grid-template-columns: 44px 1fr auto auto;
+    align-items: center;
+    gap: 16px;
+    background: var(--rf-bg-elev);
+    border: 1px solid var(--rf-line);
+    border-radius: 16px;
+    padding: 16px;
+}
+
+.rf-company-mark {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--orange), var(--lavender));
+    color: #1a0d08;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+}
+
+.rf-app-main {
+    min-width: 0;
+
+    h3 {
+        color: var(--rf-text);
+        font-size: 1rem;
+        font-family: var(--font-rf-display);
+        font-weight: 600;
+        margin-bottom: 3px;
+    }
+
+    p {
+        color: var(--rf-text-faint);
+        font-size: 0.82rem;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+}
+
+.rf-stage {
+    min-width: 86px;
+    text-align: center;
+    padding: 6px 10px;
+    border-radius: 999px;
+    color: var(--lavender);
+    background: rgba(196, 181, 253, 0.12);
+    border: 1px solid rgba(196, 181, 253, 0.22);
+    font-size: 0.74rem;
+    font-weight: 800;
+}
+
+.status-applied,
+.status-offer {
+    color: var(--orange);
+    background: rgba(255, 114, 86, 0.12);
+    border-color: rgba(255, 114, 86, 0.26);
+}
+
+.status-rejected {
+    color: #fb5c74;
+    background: rgba(251, 92, 116, 0.1);
+    border-color: rgba(251, 92, 116, 0.2);
+}
+
+.rf-row-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+@media (max-width: 760px) {
+    .rf-app-row {
+        grid-template-columns: 44px 1fr;
+    }
+
+    .rf-stage,
+    .rf-row-actions {
+        grid-column: 2;
+        justify-self: start;
+    }
+}

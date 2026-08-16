@@ -1,0 +1,137 @@
+@import '../../shared/styles/rf-shell';
+
+.rf-profile-tabs {
+    display: flex;
+    gap: 4px;
+    border-bottom: 1px solid var(--rf-line);
+    margin-bottom: 28px;
+}
+
+.rf-tab {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: none;
+    border: none;
+    color: var(--rf-text-faint);
+    font-size: 0.88rem;
+    font-weight: 600;
+    padding: 10px 16px;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: color .2s ease, border-color .2s ease;
+
+    mat-icon {
+        font-size: 18px;
+        width: 18px;
+        height: 18px;
+    }
+
+    &:hover {
+        color: var(--rf-text);
+    }
+
+    &.active {
+        color: var(--orange);
+        border-bottom-color: var(--orange);
+    }
+}
+
+.rf-profile-card {
+    max-width: 520px;
+    background: var(--rf-bg-elev);
+    border: 1px solid var(--rf-line);
+    border-radius: 16px;
+    padding: 28px;
+}
+
+.rf-profile-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 26px;
+    padding-bottom: 22px;
+    border-bottom: 1px solid var(--rf-line);
+
+    h3 {
+        font-family: var(--font-rf-display, var(--font-display));
+        font-size: 1.05rem;
+        font-weight: 600;
+        color: var(--rf-text);
+        margin-bottom: 2px;
+    }
+
+    p {
+        font-size: 0.82rem;
+        color: var(--rf-text-faint);
+    }
+}
+
+.rf-profile-avatar {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--orange), var(--lavender));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #1a0d08;
+    flex-shrink: 0;
+
+    mat-icon {
+        color: #1a0d08;
+    }
+}
+
+.rf-form {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.rf-form-row {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.rf-label {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--rf-text-faint);
+    text-transform: uppercase;
+    letter-spacing: .04em;
+}
+
+.rf-input {
+    width: 100%;
+    background: var(--rf-bg-elev-2);
+    border: 1.5px solid var(--rf-line-strong);
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-family: var(--font-rf-body, var(--font-body));
+    font-size: 0.9rem;
+    color: var(--rf-text);
+    outline: none;
+    transition: border-color .2s ease;
+
+    &::placeholder {
+        color: var(--rf-text-faint);
+    }
+
+    &:focus {
+        border-color: var(--orange);
+    }
+}
+
+.rf-form-error {
+    font-size: 0.76rem;
+    color: #fb5c74;
+}
+
+.rf-btn-primary {
+    align-self: flex-start;
+    margin-top: 6px;
+}

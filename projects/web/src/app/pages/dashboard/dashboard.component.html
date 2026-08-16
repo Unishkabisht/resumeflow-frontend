@@ -1,0 +1,125 @@
+<div class="rf-dash-shell" [class.light-mode]="!isDarkMode">
+
+  <nav class="rf-topnav">
+    <div class="rf-topnav-left">
+      <a routerLink="/dashboard" class="rf-topnav-logo">
+        <span class="rf-logo-mark"></span>
+        <span class="rf-logo-text">ResumeFlow</span>
+      </a>
+
+      <div class="rf-topnav-links">
+        <a *ngFor="let item of navItems" class="rf-topnav-item" [routerLink]="item.route" routerLinkActive="active">
+          <mat-icon *ngIf="item.icon === 'grid'">dashboard</mat-icon>
+          <mat-icon *ngIf="item.icon === 'file'">description</mat-icon>
+          <mat-icon *ngIf="item.icon === 'layout'">dashboard_customize</mat-icon>
+          <mat-icon *ngIf="item.icon === 'chart'">bar_chart</mat-icon>
+          <mat-icon *ngIf="item.icon === 'share'">link</mat-icon>
+          <mat-icon *ngIf="item.icon === 'export'">download</mat-icon>
+          <span>{{ item.label }}</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="rf-topnav-right">
+      <button class="rf-theme-btn" (click)="toggleTheme()"
+        [attr.aria-label]="isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'"
+        [title]="isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'">
+        <mat-icon>{{ isDarkMode ? 'light_mode' : 'dark_mode' }}</mat-icon>
+      </button>
+
+      <button class="rf-user" [matMenuTriggerFor]="userMenu">
+        <span class="rf-avatar">{{ getUserInitial() }}</span>
+        <mat-icon class="rf-chevron">expand_more</mat-icon>
+      </button>
+      <mat-menu #userMenu="matMenu">
+        <button mat-menu-item routerLink="/profile">
+          <mat-icon>person_outline</mat-icon>
+          <span>Profile</span>
+        </button>
+        <button mat-menu-item (click)="logout()">
+          <mat-icon>logout</mat-icon>
+          <span>Logout</span>
+        </button>
+      </mat-menu>
+    </div>
+  </nav>
+
+  <main class="rf-content">
+
+    <div class="rf-page-head">
+      <div>
+        <h1>Hi {{ user?.name || 'there' }} 👋</h1>
+        <p>Here is where everything stands today.</p>
+      </div>
+      <div class="rf-head-actions">
+        <button class="rf-btn-outline" (click)="trackApplication()">
+          <mat-icon>work_outline</mat-icon>Track an application
+        </button>
+        <button class="rf-btn-primary" (click)="newResume()">
+          <mat-icon>add</mat-icon>New resume
+        </button>
+      </div>
+    </div>
+
+    <div class="rf-loading" *ngIf="loading">Loading your dashboard…</div>
+
+    <ng-container *ngIf="!loading">
+
+      <div class="rf-stat-grid">
+        <div class="rf-stat-card" *ngFor="let stat of stats">
+          <div class="rf-stat-icon">
+            <mat-icon>{{ stat.icon }}</mat-icon>
+          </div>
+          <div class="rf-stat-body">
+            <div class="rf-stat-num">{{ stat.value }}</div>
+            <div class="rf-stat-label">{{ stat.label }}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="rf-dash-layout">
+        <div class="rf-dash-card">
+          <div class="rf-dash-card-head">
+            <h3>Recent documents</h3>
+            <button class="rf-link-btn" (click)="viewAllDocuments()">View all</button>
+          </div>
+
+          <div class="rf-doc-list" *ngIf="recentDocuments.length">
+            <button class="rf-doc-row" *ngFor="let doc of recentDocuments" (click)="openDocument(doc)">
+              <mat-icon class="rf-doc-icon">description</mat-icon>
+              <div class="rf-doc-info">
+                <span class="rf-doc-title">{{ doc.title }}</span>
+                <span class="rf-doc-sub">{{ documentTypeLabel(doc) }} · updated {{ formatDate(doc.updatedAt) }}</span>
+              </div>
+              <mat-icon class="rf-doc-chevron">chevron_right</mat-icon>
+            </button>
+          </div>
+
+          <div class="rf-empty-hint" *ngIf="!recentDocuments.length">
+            No documents yet. Create your first resume to see it here.
+          </div>
+        </div>
+
+        <div class="rf-dash-card">
+          <div class="rf-dash-card-head">
+            <h3>Application pipeline</h3>
+            <button class="rf-link-btn" (click)="managePipeline()">Manage</button>
+          </div>
+
+          <div class="rf-pipeline-list">
+            <div class="rf-pipeline-row" *ngFor="let row of pipeline">
+              <span class="rf-pipeline-dot" [ngClass]="row.colorClass"></span>
+              <span class="rf-pipeline-label">{{ row.label }}</span>
+              <div class="rf-pipeline-bar-track">
+                <div class="rf-pipeline-bar-fill" [ngClass]="row.colorClass"
+                  [style.width.%]="row.count ? (row.count / (stats[1].value === '0' ? 1 : +stats[1].value)) * 100 : 0">
+                </div>
+              </div>
+              <span class="rf-pipeline-count">{{ row.count }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </main>
+</div>

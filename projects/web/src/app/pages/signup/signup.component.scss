@@ -1,0 +1,28 @@
+:host {
+    .rf-auth-card {
+        max-width: 460px;
+        padding: 36px 40px 32px;
+    }
+
+    .rf-form-subtitle {
+        margin-bottom: 24px;
+    }
+
+    .rf-mat-form {
+        gap: 2px;
+
+        .rf-field {
+            margin-bottom: 4px;
+        }
+    }
+
+    .rf-btn-submit {
+        margin-top: 4px;
+    }
+
+    @media (max-width: 520px) {
+        .rf-auth-card {
+            padding: 28px 22px 26px;
+        }
+    }
+}

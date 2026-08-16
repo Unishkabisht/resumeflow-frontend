@@ -1,0 +1,249 @@
+<div class="rf-dash-shell" [class.light-mode]="!isDarkMode">
+  <nav class="rf-topnav">
+    <div class="rf-topnav-left">
+      <a routerLink="/dashboard" class="rf-topnav-logo"><span class="rf-logo-mark"></span><span
+          class="rf-logo-text">ResumeFlow</span></a>
+      <div class="rf-topnav-links">
+        <a *ngFor="let item of navItems" class="rf-topnav-item" [routerLink]="item.route" routerLinkActive="active">
+          <mat-icon *ngIf="item.icon === 'grid'">dashboard</mat-icon>
+          <mat-icon *ngIf="item.icon === 'file'">description</mat-icon>
+          <mat-icon *ngIf="item.icon === 'layout'">dashboard_customize</mat-icon>
+          <mat-icon *ngIf="item.icon === 'chart'">bar_chart</mat-icon>
+          <mat-icon *ngIf="item.icon === 'share'">link</mat-icon>
+          <mat-icon *ngIf="item.icon === 'export'">download</mat-icon>
+          <span>{{ item.label }}</span>
+        </a>
+      </div>
+    </div>
+    <div class="rf-topnav-right">
+      <button class="rf-theme-btn" (click)="toggleTheme()"><mat-icon>{{ isDarkMode ? 'light_mode' : 'dark_mode'
+          }}</mat-icon></button>
+      <button class="rf-user" [matMenuTriggerFor]="userMenu">
+        <span class="rf-avatar">{{ getUserInitial() }}</span>
+        <mat-icon class="rf-chevron">expand_more</mat-icon>
+      </button>
+      <mat-menu #userMenu="matMenu"><button mat-menu-item
+          (click)="logout()"><mat-icon>logout</mat-icon><span>Logout</span></button></mat-menu>
+    </div>
+  </nav>
+
+  <main class="rf-content">
+    <div class="rf-page-head rf-page-head-split">
+      <div>
+        <h1>{{ title || 'Untitled Resume' }}</h1>
+        <p>Edit on the left, the preview on the right updates instantly.</p>
+      </div>
+      <div class="rf-head-actions">
+        <a routerLink="/documents" class="rf-back-link"><mat-icon>arrow_back</mat-icon>Documents</a>
+        <button class="rf-btn-outline" (click)="exportPdf()" [disabled]="exportingPdf">
+          <mat-icon>picture_as_pdf</mat-icon>{{ exportingPdf ? 'Exporting…' : 'Export PDF' }}
+        </button>
+        <button class="rf-btn-primary" (click)="exportDocx()" [disabled]="exportingDocx">
+          <mat-icon>description</mat-icon>{{ exportingDocx ? 'Exporting…' : 'Export Word' }}
+        </button>
+      </div>
+    </div>
+
+    <div class="rf-loading" *ngIf="loading">Opening editor...</div>
+
+    <ng-container *ngIf="!loading">
+      <div class="rf-editor-tabs">
+        <button class="rf-tab" [class.active]="activeTab === 'editor'" (click)="setTab('editor')">Editor</button>
+        <button class="rf-tab" [class.active]="activeTab === 'versions'" (click)="setTab('versions')">Versions
+          ({{ versions.length }})</button>
+        <button class="rf-tab" [class.active]="activeTab === 'sharing'" (click)="setTab('sharing')">Sharing
+          ({{ share ? 1 : 0 }})</button>
+      </div>
+
+      <section class="rf-editor-layout" *ngIf="activeTab === 'editor'">
+        <div class="rf-editor-panel">
+
+          <div class="rf-field-block">
+            <label class="rf-label">Document title</label>
+            <div class="rf-title-row">
+              <input class="rf-input" [(ngModel)]="title" (blur)="saveTitle()" placeholder="Untitled Resume" />
+              <button class="rf-btn-outline" (click)="saveTitle()">{{ savingTitle ? 'Saving…' : 'Save' }}</button>
+            </div>
+          </div>
+
+          <div class="rf-field-block">
+            <label class="rf-label">Template</label>
+            <button class="rf-template-toggle" (click)="toggleTemplatePicker()">
+              <span class="rf-template-swatch" [style.background]="templateConfig.accent"></span>
+              <span>{{ selectedTemplateName() }}</span>
+              <mat-icon>{{ templatePickerOpen ? 'expand_less' : 'expand_more' }}</mat-icon>
+            </button>
+
+            <div class="rf-template-grid" *ngIf="templatePickerOpen">
+              <div class="rf-template-empty" *ngIf="!templates.length">
+                No templates yet — add rows to the Templates table.
+              </div>
+              <button class="rf-template-card" *ngFor="let tpl of templates"
+                [class.selected]="tpl.id === selectedTemplateId" (click)="chooseTemplate(tpl)">
+                <span class="rf-template-card-name">{{ tpl.name }}</span>
+                <mat-icon class="rf-template-check" *ngIf="tpl.id === selectedTemplateId">check_circle</mat-icon>
+              </button>
+            </div>
+
+            <p class="rf-template-hint" *ngIf="templateConfig.layout === 'sidebar' && sections.length">
+              First section (<strong>{{ sections[0].heading }}</strong>) shows in the colored sidebar; the rest show
+              in the main column.
+            </p>
+          </div>
+
+          <div class="rf-field-block">
+            <div class="rf-add-section-row">
+              <input class="rf-input" [(ngModel)]="newSectionHeading" placeholder="New section heading (e.g. Projects)"
+                (keydown.enter)="addSection()" />
+              <button class="rf-btn-primary" (click)="addSection()"><mat-icon>add</mat-icon>Add section</button>
+            </div>
+          </div>
+
+          <div class="rf-section-editor" *ngFor="let section of sections; let i = index">
+            <div class="rf-section-tools">
+              <button class="rf-drag-handle" mat-icon-button (click)="toggleCollapse(section)">
+                <mat-icon>{{ section.collapsed ? 'chevron_right' : 'expand_more' }}</mat-icon>
+              </button>
+              <input class="rf-input heading" [(ngModel)]="section.heading" placeholder="Section heading"
+                (blur)="saveSectionHeading(section)" />
+              <div class="rf-section-move">
+                <button mat-icon-button title="Move up" (click)="moveSectionUp(i)" [disabled]="i === 0">
+                  <mat-icon>arrow_upward</mat-icon>
+                </button>
+                <button mat-icon-button title="Move down" (click)="moveSectionDown(i)"
+                  [disabled]="i === sections.length - 1">
+                  <mat-icon>arrow_downward</mat-icon>
+                </button>
+              </div>
+              <button mat-icon-button class="rf-icon-danger" (click)="removeSection(section, i)" title="Remove section">
+                <mat-icon>delete_outline</mat-icon>
+              </button>
+            </div>
+
+            <div class="rf-section-body" *ngIf="!section.collapsed">
+              <div class="rf-bullet-row" *ngFor="let item of section.items; let bi = index">
+                <span class="rf-bullet-dot">—</span>
+                <textarea class="rf-textarea bullet" rows="1" [(ngModel)]="item.content"
+                  (blur)="saveBullet(section, item)" placeholder="Write a bullet point…"></textarea>
+                <div class="rf-bullet-actions">
+                  <button mat-icon-button title="Move up" (click)="moveBulletUp(section, bi)" [disabled]="bi === 0">
+                    <mat-icon>arrow_upward</mat-icon>
+                  </button>
+                  <button mat-icon-button title="Move down" (click)="moveBulletDown(section, bi)"
+                    [disabled]="bi === section.items.length - 1">
+                    <mat-icon>arrow_downward</mat-icon>
+                  </button>
+                  <button mat-icon-button class="rf-icon-danger" title="Remove bullet"
+                    (click)="removeBullet(section, item, bi)">
+                    <mat-icon>close</mat-icon>
+                  </button>
+                </div>
+              </div>
+
+              <button class="rf-add-bullet" (click)="addBullet(section)"><mat-icon>add</mat-icon>Add bullet</button>
+            </div>
+          </div>
+
+          <div class="rf-empty-hint" *ngIf="!sections.length">
+            No sections yet. Add one above to start building your resume.
+          </div>
+        </div>
+
+        <div class="rf-preview-panel">
+          <div id="resume-paper" class="rf-paper" [class.sidebar-layout]="templateConfig.layout === 'sidebar'"
+            [style.--tpl-accent]="templateConfig.accent" [style.--tpl-sidebar]="templateConfig.accent"
+            [style.font-family]="paperFontStack()">
+
+            <ng-container *ngIf="templateConfig.layout === 'sidebar'; else simpleLayout">
+              <aside class="rf-paper-sidebar">
+                <h2 class="rf-paper-name">{{ title || 'Untitled Resume' }}</h2>
+                <div class="rf-paper-section" *ngFor="let section of sidebarSections">
+                  <h3>{{ section.heading || 'Section' }}</h3>
+                  <ul>
+                    <li *ngFor="let item of section.items">{{ item.content || '—' }}</li>
+                    <li class="rf-paper-empty" *ngIf="!section.items.length">Start typing on the left.</li>
+                  </ul>
+                </div>
+              </aside>
+              <div class="rf-paper-main">
+                <div class="rf-paper-section" *ngFor="let section of mainSections">
+                  <h3>{{ section.heading || 'Section' }}</h3>
+                  <ul>
+                    <li *ngFor="let item of section.items">{{ item.content || '—' }}</li>
+                    <li class="rf-paper-empty" *ngIf="!section.items.length">Start typing on the left.</li>
+                  </ul>
+                </div>
+                <div class="rf-paper-empty-doc" *ngIf="!mainSections.length">
+                  Add a second section — it will appear here in the main column.
+                </div>
+              </div>
+            </ng-container>
+
+            <ng-template #simpleLayout>
+              <div class="rf-paper-body">
+                <h2 class="rf-paper-name">{{ title || 'Untitled Resume' }}</h2>
+                <div class="rf-paper-section" *ngFor="let section of sections">
+                  <h3>{{ section.heading || 'Section' }}</h3>
+                  <ul>
+                    <li *ngFor="let item of section.items">{{ item.content || '—' }}</li>
+                    <li class="rf-paper-empty" *ngIf="!section.items.length">Start typing on the left to see this
+                      section live.</li>
+                  </ul>
+                </div>
+                <div class="rf-paper-empty-doc" *ngIf="!sections.length">Add a section to see your resume take shape
+                  here.</div>
+              </div>
+            </ng-template>
+          </div>
+        </div>
+      </section>
+
+      <section class="rf-versions-panel" *ngIf="activeTab === 'versions'">
+        <p class="rf-versions-note">A version is saved automatically a couple of seconds after you stop editing.
+          Restore any snapshot below — restoring also saves your current state first, so nothing is lost.</p>
+
+        <div class="rf-loading" *ngIf="versionsLoading">Loading versions…</div>
+
+        <div class="rf-version-list" *ngIf="!versionsLoading">
+          <div class="rf-version-row" *ngFor="let v of versions">
+            <div class="rf-version-info">
+              <span class="rf-version-label">{{ v.label }}</span>
+              <span class="rf-version-time">{{ formatVersionTime(v) }}</span>
+            </div>
+            <button class="rf-btn-outline" (click)="restoreVersion(v)" [disabled]="restoringVersionId === v.id">
+              {{ restoringVersionId === v.id ? 'Restoring…' : 'Restore' }}
+            </button>
+          </div>
+
+          <div class="rf-empty-hint" *ngIf="!versions.length">No versions yet — keep editing and one will be
+            saved shortly.</div>
+        </div>
+      </section>
+
+      <section class="rf-sharing-panel" *ngIf="activeTab === 'sharing'">
+        <div class="rf-share-card" *ngIf="share">
+          <div class="rf-share-info">
+            <mat-icon>link</mat-icon>
+            <div>
+              <div class="rf-share-url">{{ share.shareUrl }}</div>
+              <div class="rf-share-sub">Anyone with this link can view a read-only copy of this resume.</div>
+            </div>
+          </div>
+          <div class="rf-share-actions">
+            <button class="rf-btn-outline" (click)="copyShare()"><mat-icon>content_copy</mat-icon>Copy</button>
+            <button class="rf-btn-outline danger" (click)="revokeShare()" [disabled]="shareLoading">
+              <mat-icon>link_off</mat-icon>Revoke
+            </button>
+          </div>
+        </div>
+
+        <div class="rf-empty-hint" *ngIf="!share">
+          <p>This document isn't shared yet.</p>
+          <button class="rf-btn-primary" (click)="createShare()" [disabled]="shareLoading">
+            <mat-icon>link</mat-icon>{{ shareLoading ? 'Creating…' : 'Create share link' }}
+          </button>
+        </div>
+      </section>
+    </ng-container>
+  </main>
+</div>

@@ -1,0 +1,115 @@
+<main class="rf-splash-page">
+
+    <div class="rf-splash-bg">
+
+        <mat-icon class="rf-deco rf-deco-1">description</mat-icon>
+        <mat-icon class="rf-deco rf-deco-2">work_outline</mat-icon>
+        <mat-icon class="rf-deco rf-deco-3">mail_outline</mat-icon>
+        <mat-icon class="rf-deco rf-deco-4">badge</mat-icon>
+        <span class="rf-deco-shape rf-shape-1"></span>
+        <span class="rf-deco-shape rf-shape-2"></span>
+        <span class="rf-deco-shape rf-shape-3"></span>
+    </div>
+
+    <div class="rf-splash-header">
+        <a routerLink="/" class="rf-splash-logo">
+            <span class="rf-logo-mark"></span>
+            ResumeFlow
+        </a>
+        <h1 class="rf-splash-title">Welcome back to <span class="rf-heading-gradient">ResumeFlow</span></h1>
+        <p class="rf-splash-sub">Log in to keep building the resume that gets you hired.</p>
+    </div>
+
+    <div class="rf-splash-illustration">
+        <div class="rf-illo-glow"></div>
+        <div class="rf-illo-card">
+            <div class="rf-illo-avatar top-left">
+                <mat-icon>person</mat-icon>
+            </div>
+            <div class="rf-illo-avatar top-right">
+                <mat-icon>person</mat-icon>
+            </div>
+            <div class="rf-illo-doc">
+                <div class="rf-illo-doc-head">
+                    <mat-icon>account_circle</mat-icon>
+                </div>
+                <div class="rf-illo-line w80"></div>
+                <div class="rf-illo-line w60"></div>
+                <div class="rf-illo-line w70"></div>
+                <div class="rf-illo-btn"></div>
+            </div>
+        </div>
+    </div>
+
+    <section class="rf-auth-card">
+
+        <h2 class="rf-form-title">Welcome back</h2>
+        <p class="rf-form-subtitle">Log in to continue building your resume.</p>
+
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="rf-mat-form">
+
+            <mat-form-field appearance="outline" class="rf-field">
+                <mat-label>Email address</mat-label>
+                <input matInput type="email" id="login-email" formControlName="email" placeholder="you@example.com" />
+                <mat-icon matPrefix>mail_outline</mat-icon>
+                <mat-error *ngIf="loginForm.get('email')?.touched && loginForm.get('email')?.invalid">
+                    Enter a valid email
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="rf-field">
+                <mat-label>Password</mat-label>
+                <input matInput [type]="showPassword ? 'text' : 'password'" id="login-password"
+                    formControlName="password" placeholder="Enter your password" />
+                <mat-icon matPrefix>lock_outline</mat-icon>
+                <button type="button" mat-icon-button matSuffix (click)="togglePassword()"
+                    [attr.aria-label]="'Show password'" [attr.aria-pressed]="showPassword">
+                    <mat-icon>{{ showPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+                </button>
+                <mat-error *ngIf="loginForm.get('password')?.touched && loginForm.get('password')?.invalid">
+                    Password is required
+                </mat-error>
+            </mat-form-field>
+
+            <p class="rf-forgot-row">
+                <a routerLink="/auth/forgot-password" class="rf-forgot-link">Forgot password?</a>
+            </p>
+
+            <div *ngIf="errorMsg" class="rf-auth-error">
+                {{ errorMsg }}
+            </div>
+
+            <button mat-flat-button type="submit" class="rf-btn-submit" [disabled]="loginForm.invalid">
+                Log In
+            </button>
+
+        </form>
+
+        <p class="rf-auth-divider">or continue with</p>
+
+        <p class="rf-social-row">
+            <button mat-stroked-button type="button" class="rf-btn-social">
+                <svg viewBox="0 0 24 24">
+                    <path fill="#EA4335"
+                        d="M12 10.2v3.9h5.5c-.25 1.4-1.7 4.1-5.5 4.1-3.3 0-6-2.7-6-6.1s2.7-6.1 6-6.1c1.9 0 3.1.8 3.9 1.5l2.6-2.5C16.9 3.4 14.7 2.4 12 2.4 6.9 2.4 2.7 6.6 2.7 11.7S6.9 21 12 21c6.9 0 8.3-4.8 8.3-7.4 0-.5 0-.9-.1-1.4H12z" />
+                </svg>
+                Google
+            </button>
+
+            <button mat-stroked-button type="button" class="rf-btn-social">
+                <svg viewBox="0 0 24 24">
+                    <path fill="currentColor"
+                        d="M12 2C6.5 2 2 6.6 2 12.2c0 4.5 2.9 8.3 6.8 9.6.5.1.7-.2.7-.5v-1.7c-2.8.6-3.4-1.3-3.4-1.3-.4-1.2-1.1-1.5-1.1-1.5-.9-.6.1-.6.1-.6 1 .1 1.5 1 1.5 1 .9 1.6 2.3 1.1 2.9.8.1-.7.4-1.1.6-1.4-2.2-.3-4.6-1.2-4.6-5.2 0-1.1.4-2 1-2.8-.1-.3-.5-1.4.1-2.9 0 0 .8-.3 2.7 1a9 9 0 0 1 5 0c1.9-1.3 2.7-1 2.7-1 .6 1.5.2 2.6.1 2.9.6.8 1 1.7 1 2.8 0 4-2.4 4.9-4.7 5.2.4.3.7.9.7 1.9v2.8c0 .3.2.6.7.5 3.9-1.3 6.8-5.1 6.8-9.6C22 6.6 17.5 2 12 2Z" />
+                </svg>
+                GitHub
+            </button>
+        </p>
+
+        <p class="rf-auth-switch">
+            Don't have an account?
+            <a routerLink="/signup">Sign up</a>
+        </p>
+
+    </section>
+
+</main>

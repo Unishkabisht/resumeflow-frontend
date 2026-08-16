@@ -1,0 +1,40 @@
+.rf-stats-strip {
+    padding: 56px 0;
+    border-top: 1px solid var(--rf-line);
+    border-bottom: 1px solid var(--rf-line);
+    margin-top: 80px;
+
+    .rf-stats-inner {
+        max-width: 1180px;
+        margin: 0 auto;
+        padding: 0 32px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 28px;
+
+        .rf-stat-item {
+            display: flex;
+            flex-direction: column;
+
+            .rf-stat-num {
+                font-family: var(--font-rf-display);
+                font-size: 2.1rem;
+                font-weight: 700;
+                color: var(--rf-text);
+                line-height: 1;
+
+                span {
+                    color: var(--orange);
+                }
+            }
+
+            .rf-stat-label {
+                font-size: 0.8rem;
+                color: var(--rf-text-faint);
+                margin-top: 8px;
+            }
+        }
+    }
+}

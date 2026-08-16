@@ -1,0 +1,67 @@
+<div class="rf-dash-shell" [class.light-mode]="!isDarkMode">
+  <nav class="rf-topnav">
+    <div class="rf-topnav-left">
+      <a routerLink="/dashboard" class="rf-topnav-logo"><span class="rf-logo-mark"></span><span
+          class="rf-logo-text">ResumeFlow</span></a>
+      <div class="rf-topnav-links">
+        <a *ngFor="let item of navItems" class="rf-topnav-item" [routerLink]="item.route" routerLinkActive="active">
+          <mat-icon *ngIf="item.icon === 'grid'">dashboard</mat-icon>
+          <mat-icon *ngIf="item.icon === 'file'">description</mat-icon>
+          <mat-icon *ngIf="item.icon === 'layout'">dashboard_customize</mat-icon>
+          <mat-icon *ngIf="item.icon === 'chart'">bar_chart</mat-icon>
+          <mat-icon *ngIf="item.icon === 'share'">link</mat-icon>
+          <mat-icon *ngIf="item.icon === 'export'">download</mat-icon>
+          <span>{{ item.label }}</span>
+        </a>
+      </div>
+    </div>
+    <div class="rf-topnav-right">
+      <button class="rf-theme-btn" (click)="toggleTheme()"><mat-icon>{{ isDarkMode ? 'light_mode' : 'dark_mode'
+          }}</mat-icon></button>
+      <button class="rf-user" [matMenuTriggerFor]="userMenu"><span class="rf-avatar">{{ getUserInitial()
+          }}</span><mat-icon class="rf-chevron">expand_more</mat-icon></button>
+      <mat-menu #userMenu="matMenu"><button mat-menu-item
+          (click)="logout()"><mat-icon>logout</mat-icon><span>Logout</span></button></mat-menu>
+    </div>
+  </nav>
+
+  <main class="rf-content">
+    <div class="rf-page-head rf-page-head-split">
+      <div>
+        <h1>Templates</h1>
+        <p>Pick a look, then build a document on top of it.</p>
+      </div>
+    </div>
+
+    <div class="rf-loading" *ngIf="templates === null">Loading templates…</div>
+
+    <section class="rf-template-grid" *ngIf="templates">
+      <article class="rf-template-card" *ngFor="let template of templates">
+        <span class="rf-template-tag">{{ configOf(template).layout }}</span>
+
+        <div class="rf-template-preview" [class.sidebar]="configOf(template).layout === 'sidebar'"
+          [style.font-family]="fontStackOf(template)">
+          <div class="rf-tp-sidebar" *ngIf="configOf(template).layout === 'sidebar'"
+            [style.background]="configOf(template).accent">
+            <span class="rf-tp-dot"></span>
+          </div>
+          <div class="rf-tp-main">
+            <div class="rf-template-bar" [style.background]="configOf(template).accent"></div>
+            <div class="rf-template-line w80"></div>
+            <div class="rf-template-line w60"></div>
+            <div class="rf-template-line w90"></div>
+          </div>
+        </div>
+
+        <h3>{{ template?.name }}</h3>
+        <button class="rf-btn-create-resume" [disabled]="creatingKey === template.id" (click)="useTemplate(template)">
+          <mat-icon>add</mat-icon>{{ creatingKey === template.id ? 'Creating…' : 'Use this template' }}
+        </button>
+      </article>
+
+      <div class="rf-empty-hint" *ngIf="!templates.length">
+        No templates yet. Add rows to the Templates table in the database.
+      </div>
+    </section>
+  </main>
+</div>

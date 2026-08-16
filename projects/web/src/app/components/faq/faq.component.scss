@@ -1,0 +1,58 @@
+.rf-faq {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 20px 32px 100px;
+
+    .rf-faq-list {
+        max-width: 760px;
+        display: block;
+    }
+}
+
+::ng-deep .rf-faq-list {
+    background: transparent !important;
+    box-shadow: none !important;
+
+    .rf-faq-item {
+        background: transparent !important;
+        box-shadow: none !important;
+        border-bottom: 1px solid var(--rf-line);
+        border-radius: 0 !important;
+
+        &:first-child {
+            border-top: 1px solid var(--rf-line);
+        }
+    }
+
+    .mat-expansion-panel-header {
+        padding: 22px 4px !important;
+        height: auto !important;
+    }
+
+    .mat-content {
+        overflow: visible;
+    }
+
+    .mat-panel-title {
+        font-family: var(--font-rf-display);
+        font-size: 1.02rem;
+        font-weight: 500;
+        color: var(--rf-text);
+        margin-right: 0;
+    }
+
+    .mat-expansion-indicator::after {
+        color: var(--rf-text-faint);
+    }
+
+    .mat-expanded .mat-expansion-indicator::after {
+        color: var(--orange);
+    }
+
+    .mat-expansion-panel-body {
+        padding: 0 4px 22px !important;
+        font-size: 0.92rem;
+        color: var(--rf-text-dim);
+        line-height: 1.6;
+    }
+}

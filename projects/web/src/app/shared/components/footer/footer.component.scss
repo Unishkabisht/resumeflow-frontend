@@ -1,0 +1,94 @@
+.rf-footer {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 80px 32px 40px;
+
+    .rf-footer-top {
+        display: grid;
+        grid-template-columns: 1.4fr repeat(4, 1fr);
+        gap: 32px;
+        padding-bottom: 56px;
+        border-bottom: 1px solid var(--rf-line);
+
+        @media (max-width: 800px) {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        @media (max-width: 520px) {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    .rf-footer-brand {
+        .rf-logo {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            font-family: var(--font-rf-display);
+            font-weight: 700;
+            font-size: 1.15rem;
+            color: var(--rf-text);
+
+            .rf-logo-mark {
+                width: 22px;
+                height: 22px;
+                border-radius: 5px;
+                background: linear-gradient(135deg, var(--orange), var(--lavender));
+                display: inline-block;
+            }
+        }
+
+        p {
+            color: var(--rf-text-faint);
+            font-size: 0.88rem;
+            margin-top: 14px;
+            max-width: 240px;
+        }
+    }
+
+    .rf-footer-col {
+        h5 {
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            letter-spacing: 0.07em;
+            color: var(--rf-text-faint);
+            margin-bottom: 16px;
+            font-weight: 600;
+        }
+
+        ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        li {
+            margin-bottom: 11px;
+        }
+
+        a {
+            font-size: 0.88rem;
+            color: var(--rf-text-dim);
+            text-decoration: none;
+            transition: color .2s ease;
+
+            &:hover {
+                color: var(--orange);
+            }
+        }
+    }
+
+    .rf-footer-bottom {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-top: 28px;
+        flex-wrap: wrap;
+        gap: 12px;
+
+        p {
+            font-size: 0.82rem;
+            color: var(--rf-text-faint);
+        }
+    }
+}
