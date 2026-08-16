@@ -12,7 +12,7 @@
 
 **A modern, intuitive, full-featured web application to design, manage, version, and export professional resumes effortlessly.**
 
-[Explore Features](#-key-features) • [Getting Started](#-getting-started) • [Tech Stack](#-tech-stack) • [Project Structure](#-project-structure)
+[Explore Features](#-key-features) • [Tech Stack](#-tech-stack) • [Project Structure](#-project-structure) • [Available Scripts](#-available-scripts)
 
 </div>
 
@@ -113,51 +113,6 @@ resumeflow-frontend/
 ├── package.json                     # Dependencies and scripts
 └── tsconfig.json                    # TypeScript compiler configuration
 ```
-
----
-
-## 🚀 Getting Started
-
-### Prerequisites
-
-Ensure you have the following installed on your machine:
-- [Node.js](https://nodejs.org/) (v16.x or newer recommended)
-- [npm](https://www.npmjs.com/) (v8.x or newer)
-- [Angular CLI](https://angular.io/cli) (v13.x)
-
-```bash
-npm install -g @angular/cli@13
-```
-
-### Installation
-
-1. **Clone the repository:**
-   ```bash
-   git clone https://github.com/Unishkabisht/resumeflow-frontend.git
-   cd resumeflow-frontend
-   ```
-
-2. **Install dependencies:**
-   ```bash
-   npm install --legacy-peer-deps
-   ```
-
-3. **Configure Environment:**
-   Update API endpoint URLs in `projects/web/src/environments/environment.ts` (defaults to `http://localhost:5000`):
-   ```typescript
-   export const environment = {
-     production: false,
-     apiUrl: 'http://localhost:5000'
-   };
-   ```
-
-4. **Run the Development Server:**
-   ```bash
-   npm run start:web
-   ```
-
-5. **Open in Browser:**
-   Navigate to `http://localhost:4200/` in your browser.
 
 ---
 
